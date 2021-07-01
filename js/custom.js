@@ -2,7 +2,7 @@
 var titleTime, OriginTitile = document.title;
 document.addEventListener("visibilitychange",
 function() {
-	document.hidden ? (document.title = "(つェ⊂) 感觉你怪怪的~", clearTimeout(titleTime)) : (document.title = "(*´∇｀*) 怪可爱的~", titleTime = setTimeout(function() {
+	document.hidden ? (document.title = "(つェ⊂) ~", clearTimeout(titleTime)) : (document.title = "(*´∇｀*) ~", titleTime = setTimeout(function() {
 		document.title = OriginTitile
 	},
 	2e3))
