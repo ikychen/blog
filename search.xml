@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>docker swarm</title>
+      <link href="/blog/2021/09/02/Docker/Swarm/"/>
+      <url>/blog/2021/09/02/Docker/Swarm/</url>
+      
+        <content type="html"><![CDATA[<h1 id="docker-swarm"><a href="#docker-swarm" class="headerlink" title="docker swarm"></a>docker swarm</h1><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init --advertise-addr 192.168.172.136</span><br></pre></td></tr></table></figure><h2 id="新的主机被当做manager（获取token）"><a href="#新的主机被当做manager（获取token）" class="headerlink" title="新的主机被当做manager（获取token）"></a>新的主机被当做manager（获取token）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm join-token manager</span><br></pre></td></tr></table></figure><h2 id="新的主机被当做worker（获取token）"><a href="#新的主机被当做worker（获取token）" class="headerlink" title="新的主机被当做worker（获取token）"></a>新的主机被当做worker（获取token）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm join-token worker</span><br></pre></td></tr></table></figure><h2 id="升级为manager"><a href="#升级为manager" class="headerlink" title="升级为manager"></a>升级为manager</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker node promote</span><br></pre></td></tr></table></figure><h2 id="降级为work"><a href="#降级为work" class="headerlink" title="降级为work"></a>降级为work</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker node demote</span><br></pre></td></tr></table></figure><h2 id="创建自定义的overlay网络"><a href="#创建自定义的overlay网络" class="headerlink" title="创建自定义的overlay网络"></a>创建自定义的overlay网络</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create --driver overlay my-overlay-network</span><br></pre></td></tr></table></figure><h2 id="管理器节点离开Docker-Swarm模式"><a href="#管理器节点离开Docker-Swarm模式" class="headerlink" title="管理器节点离开Docker Swarm模式"></a>管理器节点离开Docker Swarm模式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave --force</span><br></pre></td></tr></table></figure><h2 id="普通节点离开Docker-Swarm模式"><a href="#普通节点离开Docker-Swarm模式" class="headerlink" title="普通节点离开Docker Swarm模式"></a>普通节点离开Docker Swarm模式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>docker常用命令</title>
+      <link href="/blog/2021/09/02/Docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
+      <url>/blog/2021/09/02/Docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+      
+        <content type="html"><![CDATA[<h1 id="修改主机名"><a href="#修改主机名" class="headerlink" title="修改主机名"></a>修改主机名</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hostname</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure><h1 id="添加node的标签"><a href="#添加node的标签" class="headerlink" title="添加node的标签"></a>添加node的标签</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker node update --label-add role=mic node01</span><br></pre></td></tr></table></figure><h1 id="配置镜像地址"><a href="#配置镜像地址" class="headerlink" title="配置镜像地址"></a>配置镜像地址</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/docker/daemon.json </span><br></pre></td></tr></table></figure><h1 id="清理悬空镜像"><a href="#清理悬空镜像" class="headerlink" title="清理悬空镜像"></a>清理悬空镜像</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi $(docker images -f <span class="string">&quot;dangling=true&quot;</span> -q)</span><br></pre></td></tr></table></figure><h1 id="删除已停止的镜像"><a href="#删除已停止的镜像" class="headerlink" title="删除已停止的镜像"></a>删除已停止的镜像</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm `docker ps -a | grep Exited | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br></pre></td></tr></table></figure><h1 id="创建容器并启动"><a href="#创建容器并启动" class="headerlink" title="创建容器并启动"></a>创建容器并启动</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name myjdk01 d5d4d6126200</span><br></pre></td></tr></table></figure><h1 id="修改镜像"><a href="#修改镜像" class="headerlink" title="修改镜像"></a>修改镜像</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit -m <span class="string">&quot;add fontconfig&quot;</span> 0b2616b0e5a8 ouruser/sinatra:v2</span><br></pre></td></tr></table></figure><h1 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service scale service=4</span><br></pre></td></tr></table></figure><h1 id="docker-swarm"><a href="#docker-swarm" class="headerlink" title="docker swarm"></a>docker swarm</h1><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init --advertise-addr 192.168.172.136</span><br></pre></td></tr></table></figure><h2 id="新的主机被当做manager"><a href="#新的主机被当做manager" class="headerlink" title="新的主机被当做manager"></a>新的主机被当做manager</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm join-token manager</span><br></pre></td></tr></table></figure><h2 id="新的主机被当做worker"><a href="#新的主机被当做worker" class="headerlink" title="新的主机被当做worker"></a>新的主机被当做worker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm join-token worker</span><br></pre></td></tr></table></figure><h2 id="升级为manager"><a href="#升级为manager" class="headerlink" title="升级为manager"></a>升级为manager</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker node promote</span><br></pre></td></tr></table></figure><h2 id="降级为work"><a href="#降级为work" class="headerlink" title="降级为work"></a>降级为work</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker node demote</span><br></pre></td></tr></table></figure><h2 id="创建自定义的overlay网络"><a href="#创建自定义的overlay网络" class="headerlink" title="创建自定义的overlay网络"></a>创建自定义的overlay网络</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create --driver overlay my-overlay-network</span><br></pre></td></tr></table></figure><h2 id="管理器节点离开Docker-Swarm模式"><a href="#管理器节点离开Docker-Swarm模式" class="headerlink" title="管理器节点离开Docker Swarm模式"></a>管理器节点离开Docker Swarm模式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave --force</span><br></pre></td></tr></table></figure><h2 id="普通节点离开Docker-Swarm模式"><a href="#普通节点离开Docker-Swarm模式" class="headerlink" title="普通节点离开Docker Swarm模式"></a>普通节点离开Docker Swarm模式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>动态代理</title>
       <link href="/blog/2021/07/08/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
       <url>/blog/2021/07/08/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</url>
@@ -132,9 +182,9 @@
       
         <tags>
             
-            <tag> 面试题 </tag>
-            
             <tag> Mysql </tag>
+            
+            <tag> 面试题 </tag>
             
         </tags>
       
