@@ -4,11 +4,86 @@
   
     
     <entry>
+      <title>排序算法</title>
+      <link href="/blog/2022/10/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
+      <url>/blog/2022/10/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><blockquote><p>比较相邻的元素，如果前一个元素比后一个元素大，就交换这两个元素的位置。<br>对每一个相邻元素做同样的工作，从开始第一对元素到结尾的最后一对元素。最终最后位置的元素就是最大值。</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int [] arr = &#123;1, 3, 2, 6, 5, 4&#125;;</span><br><span class="line"></span><br><span class="line">for (int i = 0; i &lt; arr.length; i++) &#123;</span><br><span class="line">    for (int j = 1; j &lt; arr.length - i; j++) &#123;</span><br><span class="line">        int temp = arr[j];</span><br><span class="line">        if(temp &lt; arr[j - 1]) &#123;</span><br><span class="line">            arr[j] = arr[j - 1];</span><br><span class="line">            arr[j - 1] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构和算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据结构和算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>数据结构</title>
+      <link href="/blog/2022/10/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+      <url>/blog/2022/10/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+      
+        <content type="html"><![CDATA[<h1 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h1><h2 id="青蛙跳台"><a href="#青蛙跳台" class="headerlink" title="青蛙跳台"></a>青蛙跳台</h2><blockquote><p>一只青蛙每次可以跳1个或2个台阶，那么要上到第n个台阶上一共有多少种跳法</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static int jump(int i) &#123;</span><br><span class="line">    if (i == 1) &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125; else if (i == 2) &#123;</span><br><span class="line">        return 2;</span><br><span class="line">    &#125; else if (i &lt;= 0) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    return jump(i - 2) + jump(i - 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构和算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据结构和算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>内存模型</title>
+      <link href="/blog/2022/10/17/JVM/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
+      <url>/blog/2022/10/17/JVM/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</url>
+      
+        <content type="html"><![CDATA[<h1 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h1><p><img src="/blog/img/md/JVM/heapModel.jpg"></p><h2 id="程序计数器（线程私有）"><a href="#程序计数器（线程私有）" class="headerlink" title="程序计数器（线程私有）"></a>程序计数器（线程私有）</h2><blockquote><p>内存占用很小，几乎可以忽略不计（无OOM）<br>存储当前线程所执行的字节码行号。当cpu时间片被其他线程占用后，<br>这个线程将被挂起，当这个线程重新被唤醒的时候需要知道从哪个地方开始执行。</p></blockquote><h2 id="虚拟机栈（线程私有）"><a href="#虚拟机栈（线程私有）" class="headerlink" title="虚拟机栈（线程私有）"></a>虚拟机栈（线程私有）</h2><blockquote><p>每当有方法执行的时候，会创建一个栈帧存到虚拟机栈里<br>当栈的深度大于虚拟机允许的深度，会抛出StackOverflowError异常（方法递归调用）<br>如果虚拟机栈无法申请到足够的内存，还会抛出OutOfMemoryError异常（循环创建线程导致栈内存不足无法分配）</p></blockquote><h3 id="栈帧"><a href="#栈帧" class="headerlink" title="栈帧"></a>栈帧</h3><ul><li><p>局部变量表</p><blockquote><p>包含了方法的局部变量，8种基本数据类型，对象引用，returnAddress类型</p></blockquote></li><li><p>操作数栈</p><blockquote><p>根据字节码指令压入操作数栈，再通过指令将操作数取出</p></blockquote></li><li><p>动态链接</p><blockquote><p>每个栈帧都包含一个指向运行时常量池中该栈帧所属方法的引用</p></blockquote></li><li><p>方法出口</p></li></ul><h2 id="本地方法栈（线程私有）"><a href="#本地方法栈（线程私有）" class="headerlink" title="本地方法栈（线程私有）"></a>本地方法栈（线程私有）</h2><blockquote><p>与虚拟机栈一样，只是方法类型不同</p></blockquote><h2 id="堆（线程共享）"><a href="#堆（线程共享）" class="headerlink" title="堆（线程共享）"></a>堆（线程共享）</h2><blockquote><p>占用内存最大的一块，存放对象实例，垃圾回收的主要区域<br>堆空间 = 新生代1/3（Eden8/10 + From Survivor1/10 + ToSurvivor1/10） + 老年代2/3<br>堆大小可以通过参数–Xms（堆的初始容量）、-Xmx（堆的最大容量）指定<br>GC分为两种： Minor GC、Full GC</p></blockquote><h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><blockquote><p>GS Roots根节点：线程栈的本地变量，静态变量，本地方法栈的变量等等<br>将GS Roots对象作为起点，找到引用的对象并标记为非垃圾，其余都是垃圾对象</p></blockquote><h2 id="Minor-GC"><a href="#Minor-GC" class="headerlink" title="Minor GC"></a>Minor GC</h2><blockquote><p> 当对象不断生成的时候，会先进入Eden，当Eden放不下了，触发Minor GC，<br>将存活的对象转移到from区，当Eden和from区都放不下后，触发Minor GC，将仍存活的对象复制到to区，然后清理Eden和from区，并<br>将这些对象年龄设为1，以后每次Minor GC对象年龄都会加1，当对象的年龄达到某个值时 ( 默认是 15 岁，可以通过参数 -XX:MaxTenuringThreshold 来设定 )<br>这些对象就会成为老年代<br>如果对象较大则直接进入到老年代</p></blockquote><h2 id="Full-GC"><a href="#Full-GC" class="headerlink" title="Full GC"></a>Full GC</h2><blockquote><p>STW（stop the world）：暂停所有的用户线程（防止在GC的时候，用户线程执行完毕产生新的垃圾）<br>大对象直接进入老年代，动态年龄判断，年龄大于阈值，进入老年代，Minor GC后，存活的对象空间大于survivor空间，直接进入老年代</p></blockquote><blockquote><p>动态年龄判断：如果Survivor空间中相同年龄的对象（年龄1+年龄2+年龄3+年龄N）总和大小大于Survivor总容量的一半，年龄大于或等于该年龄的对象就可以直接进入老年代</p></blockquote><h2 id="方法区-元空间（内存共享）"><a href="#方法区-元空间（内存共享）" class="headerlink" title="方法区/元空间（内存共享）"></a>方法区/元空间（内存共享）</h2><blockquote><p>存储已加载的类信息、常量、静态变量、即时编译器编译后的代码等<br>Class文件常量池、运行时常量池<br>常量池存的是字面量（字符串、被声明为final的常量值、基本数据类型）<br>符号引用（各类包、类、接口、字段、方法等元素的全限定名），在类加载连接过程中的解析会把符号引用替换为直接引用</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> JVM </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JVM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>类加载</title>
       <link href="/blog/2022/10/17/JVM/%E7%B1%BB%E5%8A%A0%E8%BD%BD/"/>
       <url>/blog/2022/10/17/JVM/%E7%B1%BB%E5%8A%A0%E8%BD%BD/</url>
       
-        <content type="html"><![CDATA[<h1 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h1><blockquote><p>Java程序在计算机中的三个阶段</p></blockquote><p><img src="/blog/img/md/JVM/classLoder01.png"></p><h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><blockquote><p>类加载的五个阶段<br><img src="/blog/img/md/JVM/classLoder02.png"></p></blockquote><ol><li><p>加载阶段</p><blockquote><p>JVM从不同的数据源加载的字节码文件转化为二进制字节流加载到内存中，并生成一个代表该类的Class对象</p></blockquote></li><li><p>连接阶段</p></li></ol><ul><li><p>验证</p><blockquote><p>目的是为了确保Class文件的字节流中包含的信息符合当前虚拟机的要求，且不会危害虚拟机自身的安全。</p></blockquote></li><li><p>准备</p><blockquote><p>JVM在该阶段对静态变量，分配内存并默认初始化，这些变量的内存都在方法区进行分配。</p></blockquote></li><li><p>解析</p><blockquote><p>虚拟机将常量池内的符号引用替换为直接引用的过程。（类似于逻辑关系转换为物理关系的过程）</p></blockquote></li></ul><ol start="3"><li>初始化<blockquote><p>收集所有静态变量和静态代码块中的语句，合并后进行赋值。</p></blockquote></li></ol><h2 id="什么是类加载器"><a href="#什么是类加载器" class="headerlink" title="什么是类加载器"></a>什么是类加载器</h2><blockquote><p>在类加载阶段，类加载器会将字节码文件转化为二进制字节流加载到内存中</p></blockquote><h2 id="为什么有那么多类加载器"><a href="#为什么有那么多类加载器" class="headerlink" title="为什么有那么多类加载器"></a>为什么有那么多类加载器</h2><ol><li>需要从多种来源读取字节流，例如网络、文件系统等</li><li>相同包下的两个类A（methodA()包访问）、B（methodB()包访问），只有都有同一个类加载器加载时A才有对B的package访问权限。<br>如果两个类的类加载器不同，A类就无法访问B类的methodB方法，即使它们在同一个包下<h2 id="什么时候需要自定义类加载器"><a href="#什么时候需要自定义类加载器" class="headerlink" title="什么时候需要自定义类加载器"></a>什么时候需要自定义类加载器</h2></li><li>如果需要将编译后的代码用某种算法加密，可以自己实现类加载器，负责将这段代码加密后还原</li><li>需要自定义类的来源</li></ol><h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><blockquote><p>当一个类需要被加载的时候，需要先把请求交给父类加载器，当父类加载器无法加载的时候，子类加载器才会去尝试加载。</p></blockquote><p><img src="/blog/img/md/%E9%9D%A2%E8%AF%95%E9%A2%98/01.png" alt="图1"></p><h3 id="为什么有双亲委派模型"><a href="#为什么有双亲委派模型" class="headerlink" title="为什么有双亲委派模型"></a>为什么有双亲委派模型</h3><blockquote><p>为了确保类只会被加载一次，如果我直接重写了Object类，没有双亲委派的话，就直接生效了。<br>有了双亲委派，这个类先被Bootstrap类加载器加载后，自己重写的类将不会生效。</p></blockquote>]]></content>
+        <content type="html"><![CDATA[<h1 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h1><blockquote><p>Java程序在计算机中的三个阶段</p></blockquote><p><img src="/blog/img/md/JVM/classLoder01.png"></p><h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><blockquote><p>类加载的五个阶段<br><img src="/blog/img/md/JVM/classLoder02.png"></p></blockquote><ol><li><p>加载阶段</p><blockquote><p>JVM从不同的数据源加载的字节码文件转化为二进制字节流加载到内存中，并生成一个代表该类的Class对象</p></blockquote></li><li><p>连接阶段</p></li></ol><ul><li><p>验证</p><blockquote><p>目的是为了确保Class文件的字节流中包含的信息符合当前虚拟机的要求，且不会危害虚拟机自身的安全。</p></blockquote></li><li><p>准备</p><blockquote><p>JVM在该阶段对静态变量，分配内存并默认初始化，这些变量的内存都在方法区进行分配。</p></blockquote></li><li><p>解析</p><blockquote><p>虚拟机将常量池内的符号引用替换为直接引用的过程。（类似于逻辑关系转换为物理关系的过程）</p></blockquote></li></ul><ol start="3"><li>初始化<blockquote><p>收集所有静态变量和静态代码块中的语句，合并后进行赋值。</p></blockquote></li></ol><h2 id="什么是类加载器"><a href="#什么是类加载器" class="headerlink" title="什么是类加载器"></a>什么是类加载器</h2><blockquote><p>在类加载阶段，类加载器会将字节码文件转化为二进制字节流加载到内存中</p></blockquote><h2 id="为什么有那么多类加载器"><a href="#为什么有那么多类加载器" class="headerlink" title="为什么有那么多类加载器"></a>为什么有那么多类加载器</h2><ol><li>需要从多种来源读取字节流，例如网络、文件系统等</li><li>相同包下的两个类A（methodA()包访问）、B（methodB()包访问），只有都有同一个类加载器加载时A才有对B的package访问权限。<br>如果两个类的类加载器不同，A类就无法访问B类的methodB方法，即使它们在同一个包下<h2 id="什么时候需要自定义类加载器"><a href="#什么时候需要自定义类加载器" class="headerlink" title="什么时候需要自定义类加载器"></a>什么时候需要自定义类加载器</h2></li><li>如果需要将编译后的代码用某种算法加密，可以自己实现类加载器，负责将这段代码加密后还原</li><li>需要自定义类的来源</li></ol><h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><blockquote><p>当一个类需要被加载的时候，需要先把请求交给父类加载器，当父类加载器无法加载的时候，子类加载器才会去尝试加载。</p></blockquote><p><img src="/blog/img/md/%E9%9D%A2%E8%AF%95%E9%A2%98/01.png"></p><h3 id="为什么有双亲委派模型"><a href="#为什么有双亲委派模型" class="headerlink" title="为什么有双亲委派模型"></a>为什么有双亲委派模型</h3><blockquote><p>为了确保类只会被加载一次，如果我直接重写了Object类，没有双亲委派的话，就直接生效了。<br>有了双亲委派，这个类先被Bootstrap类加载器加载后，自己重写的类将不会生效。</p></blockquote><h2 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class MyClassLoader extends ClassLoader &#123;</span><br><span class="line"></span><br><span class="line">    private final String path;</span><br><span class="line"></span><br><span class="line">    public MyClassLoader(String path) &#123;</span><br><span class="line">        this.path = path;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123;</span><br><span class="line">        String classPath = path + name + &quot;.class&quot;;</span><br><span class="line">        try (InputStream inputStream = new FileInputStream(classPath);</span><br><span class="line">             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) &#123;</span><br><span class="line">            int temp;</span><br><span class="line">            while ((temp = inputStream.read()) != -1) &#123;</span><br><span class="line">                outputStream.write(temp);</span><br><span class="line">            &#125;</span><br><span class="line">            byte[] bytes = outputStream.toByteArray();</span><br><span class="line">            return defineClass(name, bytes, 0, bytes.length);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        throw new ClassNotFoundException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) throws Exception &#123;</span><br><span class="line">   MyClassLoader classLoader = new MyClassLoader(&quot;D:\\classLoaderTest\\&quot;);</span><br><span class="line">   Class&lt;?&gt; clazz = classLoader.loadClass(&quot;HelloWorld&quot;);</span><br><span class="line">   System.out.println(clazz.getClassLoader());</span><br><span class="line">   System.out.println(clazz.getConstructor().newInstance());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       
       
       <categories>
