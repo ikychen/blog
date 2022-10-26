@@ -4,6 +4,81 @@
   
     
     <entry>
+      <title>Union-Find</title>
+      <link href="/blog/2022/10/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/Union-Find/"/>
+      <url>/blog/2022/10/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/Union-Find/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构和算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据结构和算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>归纳法</title>
+      <link href="/blog/2022/10/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E5%BD%92%E7%BA%B3%E6%B3%95/"/>
+      <url>/blog/2022/10/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E5%BD%92%E7%BA%B3%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>证明当n= 1时命题成立。<br>假设n=m时命题成立，那么可以推导出在n=m+1时命题也成立。</p></blockquote><h1 id="证明从N个数中取三个整数的不同组合为-N-N-1-N-2-6"><a href="#证明从N个数中取三个整数的不同组合为-N-N-1-N-2-6" class="headerlink" title="证明从N个数中取三个整数的不同组合为 N(N-1)(N-2)/6"></a>证明从N个数中取三个整数的不同组合为 N(N-1)(N-2)/6</h1><blockquote><p>从N+1个整数中取出3个整数的不同组合的总数可以分成两部分<br>第一部分:不包含第N+1元素的,有f(N)=N(N-1)(N-2)/6<br>第二部分:包含第N+1元素的,即从N个数中取两个整数的总和为N(N-1)/2<br>只要求证f(N+1) = f(N) + N(N-1)/2即可</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构和算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据结构和算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>排序算法</title>
+      <link href="/blog/2022/10/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"/>
+      <url>/blog/2022/10/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>从数组的中间元素开始搜索，如果该元素正好是目标元素，则搜索过程结束，否则执行下一步。<br>如果目标元素大于/小于中间元素，则在数组大于/小于中间元素的那一半区域查找，然后重复步骤（1）的操作。<br>如果某一步数组为空，则表示找不到目标元素。<br>二分法查找的时间复杂度O(logn)。</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class BinarySearch &#123;</span><br><span class="line"></span><br><span class="line">    //递归查询</span><br><span class="line">    public static int recursiveSearch(int key, int[] arr, int low, int high) &#123;</span><br><span class="line">        if(low &lt;= high) &#123;</span><br><span class="line">            int mid = low + (high - low) / 2;</span><br><span class="line">            if (key == arr[mid]) &#123;</span><br><span class="line">                return mid;</span><br><span class="line">            &#125; else if (key &gt; arr[mid]) &#123;</span><br><span class="line">                return recursiveSearch(key, arr, mid + 1, high);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                return recursiveSearch(key, arr, low, mid - 1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //非递归查询</span><br><span class="line">    public static int search(int key, int[] arr) &#123;</span><br><span class="line">        int low = 0;</span><br><span class="line">        int high = arr.length - 1;</span><br><span class="line">        while (low &lt;= high) &#123;</span><br><span class="line">            int mid = low + (high - low) / 2;</span><br><span class="line">            if (key == arr[mid]) &#123;</span><br><span class="line">                return mid;</span><br><span class="line">            &#125; else if (key &gt; arr[mid]) &#123;</span><br><span class="line">                low = mid + 1;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                high = mid - 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        int[] arr = &#123;1, 2, 3, 4, 5, 6, 7, 8, 9, 10&#125;;</span><br><span class="line">        System.out.println(search(2, arr));</span><br><span class="line">        System.out.println(recursiveSearch(7, arr, 0 , arr.length - 1));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据结构和算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据结构和算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>设计模式（二）策略模式</title>
       <link href="/blog/2022/10/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%BA%8C%EF%BC%89%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/"/>
       <url>/blog/2022/10/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%BA%8C%EF%BC%89%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</url>
