@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>设计模式（三）观察者模式</title>
+      <link href="/blog/2022/10/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%B8%89%EF%BC%89%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
+      <url>/blog/2022/10/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%B8%89%EF%BC%89%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+      
+        <content type="html"><![CDATA[<h1 id="一、观察者模式"><a href="#一、观察者模式" class="headerlink" title="一、观察者模式"></a>一、观察者模式</h1><blockquote><p>当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">//观察者接口（jdk自带）</span><br><span class="line">public interface Observer &#123;</span><br><span class="line">//收到通知</span><br><span class="line">    void update(Observable o, Object arg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//观察者</span><br><span class="line">class ObserverOne implements Observer &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void update(Observable o, Object arg) &#123;</span><br><span class="line">        //收到通知</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//主题（jdk自带）</span><br><span class="line">public class Observable &#123;</span><br><span class="line">    //添加观察者</span><br><span class="line">    void add(Observer observer);</span><br><span class="line">    //删除观察者</span><br><span class="line">    void remove(Observer observer);</span><br><span class="line">    //通知所有观察者</span><br><span class="line">    void notifyObservers();</span><br><span class="line">&#125;</span><br><span class="line">//被观察者</span><br><span class="line">class Subject extends Observable &#123;</span><br><span class="line"></span><br><span class="line">    public void doSomething() &#123;</span><br><span class="line">        //发生改变</span><br><span class="line">        setChanged();</span><br><span class="line">        notifyObservers(&quot;通知...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    Subject subject = new Subject();</span><br><span class="line">    ObserverOne ob = new ObserverOne();</span><br><span class="line">    //添加观察者</span><br><span class="line">    subject.addObserver(ob);</span><br><span class="line">    //执行业务逻辑后，通知观察者</span><br><span class="line">    subject.doSomething();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 设计模式 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 设计模式 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Union-Find</title>
       <link href="/blog/2022/10/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/Union-Find/"/>
       <url>/blog/2022/10/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/Union-Find/</url>
