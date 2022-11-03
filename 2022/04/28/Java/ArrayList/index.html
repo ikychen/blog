@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ArrayList | Chen</title><meta name="keywords" content="Java"><meta name="author" content="Chen"><meta name="copyright" content="Chen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ArrayList的主要成员变量private static final int DEFAULT_CAPACITY &#x3D; 10；  当ArrayList的构造方法中没有显示指出ArrayList的数组长度时，类内部使用默认缺省时对象数组的容量大小，为10。  private static final Object[] EMPTY_ELEMENTDATA &#x3D; {};  当ArrayList的构造方法中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ArrayList">
+<meta property="og:url" content="https://ikychen.github.io/blog/2022/04/28/Java/ArrayList/index.html">
+<meta property="og:site_name" content="Chen">
+<meta property="og:description" content="ArrayList的主要成员变量private static final int DEFAULT_CAPACITY &#x3D; 10；  当ArrayList的构造方法中没有显示指出ArrayList的数组长度时，类内部使用默认缺省时对象数组的容量大小，为10。  private static final Object[] EMPTY_ELEMENTDATA &#x3D; {};  当ArrayList的构造方法中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ikychen.github.io/blog/img/cover/java.png">
+<meta property="article:published_time" content="2022-04-28T02:38:28.223Z">
+<meta property="article:modified_time" content="2022-11-03T01:24:35.528Z">
+<meta property="article:author" content="Chen">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ikychen.github.io/blog/img/cover/java.png"><link rel="shortcut icon" href="/blog/img/favicon.png"><link rel="canonical" href="https://ikychen.github.io/blog/2022/04/28/Java/ArrayList/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/blog/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/blog/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ArrayList',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-03 09:24:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/blog/css/my_index.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/blog/img/tx.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/blog/archives/"><div class="headline">文章</div><div class="length-num">59</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/blog/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/blog/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/blog/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/blog/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/blog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/blog/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-cog"></i><span> 工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.logomaker.com.cn/index.php"><i class="fa-fw fas fa-genderless"></i><span> logo生成</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.aconvert.com/cn/image"><i class="fa-fw fas fa-images"></i><span> 图片压缩</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="http://tool.chinaz.com/Tools/unicode.aspx"><i class="fa-fw fas fa-code"></i><span> 编码转换</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/blog/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/blog/">Chen</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/blog/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/blog/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/blog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/blog/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-cog"></i><span> 工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.logomaker.com.cn/index.php"><i class="fa-fw fas fa-genderless"></i><span> logo生成</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://www.aconvert.com/cn/image"><i class="fa-fw fas fa-images"></i><span> 图片压缩</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="http://tool.chinaz.com/Tools/unicode.aspx"><i class="fa-fw fas fa-code"></i><span> 编码转换</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ArrayList</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-28T02:38:28.223Z" title="发表于 2022-04-28 10:38:28">2022-04-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-03T01:24:35.528Z" title="更新于 2022-11-03 09:24:35">2022-11-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/blog/categories/Java/">Java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ArrayList"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="ArrayList的主要成员变量"><a href="#ArrayList的主要成员变量" class="headerlink" title="ArrayList的主要成员变量"></a>ArrayList的主要成员变量</h1><p>private static final int DEFAULT_CAPACITY = 10；</p>
+<blockquote>
+<p>当ArrayList的构造方法中没有显示指出ArrayList的数组长度时，类内部使用默认缺省时对象数组的容量大小，为10。</p>
+</blockquote>
+<p>private static final Object[] EMPTY_ELEMENTDATA = {};</p>
+<blockquote>
+<p>当ArrayList的构造方法中显示指出ArrayList的数组长度为0时，类内部将EMPTY_ELEMENTDATA 这个空对象数组赋给elemetData数组。</p>
+</blockquote>
+<p>private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};</p>
+<blockquote>
+<p>当ArrayList的构造方法中没有显示指出ArrayList的数组长度时，类内部使用默认缺省时对象数组为DEFAULTCAPACITY_EMPTY_ELEMENTDATA。</p>
+</blockquote>
+<p>transient Object[] elemetData;</p>
+<blockquote>
+<p>ArrayList的底层数据结构，只是一个对象数组，用于存放实际元素，并且被标记为transient，也就意味着在序列化的时候此字段是不会被序列化的。</p>
+</blockquote>
+<p>private int size;</p>
+<blockquote>
+<p>实际ArrayList中存放的元素的个数，默认时为0个元素。</p>
+</blockquote>
+<p>private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE – 8;</p>
+<blockquote>
+<p>ArrayList中的对象数组的最大数组容量为Integer.MAX_VALUE – 8。</p>
+</blockquote>
+<h1 id="ArrayList的构造方法"><a href="#ArrayList的构造方法" class="headerlink" title="ArrayList的构造方法"></a>ArrayList的构造方法</h1><p>无参构造方法<br>对于无参构造方法，将成员变量elementData的值设为DEFAULTCAPACITY_EMPTY_ELEMENTDATA。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList() &#123; </span><br><span class="line">        // 无参构造函数，设置元素数组为空 </span><br><span class="line">        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>int类型参数构造方法<br>参数为希望的ArrayList的数组的长度，initialCapacity。首先要判断参数initialCapacity与0的大小关系：</p>
+<p>如果initialCapacity大于0，则创建一个大小为initialCapacity的对象数组赋给elementData。</p>
+<p>如果initialCapacity等于0，则将EMPTY_ELEMENTDATA赋给elementData。</p>
+<p>如果initialCapacity小于0，抛出异常（非法的容量）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList(int initialCapacity) &#123;</span><br><span class="line">    if (initialCapacity &gt; 0) &#123; // 初始容量大于0</span><br><span class="line">        this.elementData = new Object[initialCapacity]; // 初始化元素数组</span><br><span class="line">    &#125; else if (initialCapacity == 0) &#123; // 初始容量为0</span><br><span class="line">        this.elementData = EMPTY_ELEMENTDATA; // 为空对象数组</span><br><span class="line">    &#125; else &#123; // 初始容量小于0，抛出异常</span><br><span class="line">        throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+</span><br><span class="line">                                               initialCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Collection&lt;? extends E&gt;类型构造方法<br>第一步，将参数中的集合转化为数组赋给elementData；</p>
+<p>第二步，参数集合是否是空。通过比较size与第一步中的数组长度的大小。</p>
+<p>第三步，如果参数集合为空，则设置元素数组为空，即将EMPTY_ELEMENTDATA赋给elementData；</p>
+<p>第四步，如果参数集合不为空，接下来判断是否成功将参数集合转化为Object类型的数组，如果转化成Object类型的数组成功，则将数组进行复制，转化为Object类型的数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList(Collection&lt;? extends E&gt; c) &#123; // 集合参数构造函数</span><br><span class="line">    elementData = c.toArray(); // 转化为数组</span><br><span class="line">    if ((size = elementData.length) != 0) &#123; // 参数为非空集合</span><br><span class="line">        if (elementData.getClass() != Object[].class) // 是否成功转化为Object类型数组</span><br><span class="line">            elementData = Arrays.copyOf(elementData, size, Object[].class); // 不为Object数组的话就进行复制</span><br><span class="line">    &#125; else &#123; // 集合大小为空，则设置元素数组为空</span><br><span class="line">        this.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="ArrayList的add-方法"><a href="#ArrayList的add-方法" class="headerlink" title="ArrayList的add()方法"></a>ArrayList的add()方法</h1><p>在add()方法中主要完成了三件事：首先确保能够将希望添加到集合中的元素能够添加到集合中，即确保ArrayList的容量（判断是否需要扩容）；然后将元素添加到elementData数组的指定位置；最后将集合中实际的元素个数加1。</p>
+<p>public boolean add(E e) { // 添加元素<br>    ensureCapacityInternal(size + 1);  // 判断是否需要扩容<br>    elementData[size++] = e;//添加元素<br>    return true;<br>}</p>
+<h1 id="ensureCapacityInternal"><a href="#ensureCapacityInternal" class="headerlink" title="ensureCapacityInternal"></a>ensureCapacityInternal</h1><blockquote>
+<p>确定集合为了确保添加元素成功是否需要对现有的元素数组进行扩容</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private void ensureExplicitCapacity(int minCapacity) &#123;</span><br><span class="line">    modCount++; //结构性修改计数器加一</span><br><span class="line"></span><br><span class="line">    // overflow-conscious code</span><br><span class="line">    if (minCapacity - elementData.length &gt; 0)//如果size+1的容量大于数组长度，则需要扩容</span><br><span class="line">        grow(minCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="grow"><a href="#grow" class="headerlink" title="grow"></a>grow</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private void grow(int minCapacity) &#123;</span><br><span class="line">    // overflow-conscious code</span><br><span class="line">    int oldCapacity = elementData.length; // 旧容量</span><br><span class="line">    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1); // 新容量为旧容量的1.5倍</span><br><span class="line">    if (newCapacity - minCapacity &lt; 0) // 新容量小于参数指定容量，修改新容量</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    if (newCapacity - MAX_ARRAY_SIZE &gt; 0) // 新容量大于最大容量</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity); //指定新容量</span><br><span class="line">    // 拷贝扩容</span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Chen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://ikychen.github.io/blog/2022/04/28/Java/ArrayList/">https://ikychen.github.io/blog/2022/04/28/Java/ArrayList/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://ikychen.github.io/blog" target="_blank">Chen</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/blog/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="/blog/img/cover/java.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/blog/2022/04/28/git/%E5%88%A0%E9%99%A4%E5%A4%A7%E6%96%87%E4%BB%B6%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95/"><img class="prev-cover" src="/blog/img/cover/git.png" onerror="onerror=null;src='/blog/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">git删除大文件历史记录</div></div></a></div><div class="next-post pull-right"><a href="/blog/2022/04/28/Mysql/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"><img class="next-cover" src="/blog/img/cover/mysql.png" onerror="onerror=null;src='/blog/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Mysql 常见问题</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/blog/2022/04/28/Java/Jdk命令/" title="JDK命令"><img class="cover" src="/blog/img/cover/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-28</div><div class="title">JDK命令</div></div></a></div><div><a href="/blog/2022/04/28/Java/Lambda/" title="Lambda"><img class="cover" src="/blog/img/cover/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-28</div><div class="title">Lambda</div></div></a></div><div><a href="/blog/2022/04/28/Java/Stream/" title="Stream"><img class="cover" src="/blog/img/cover/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-28</div><div class="title">Stream</div></div></a></div><div><a href="/blog/2022/10/17/Java/反射机制/" title="反射机制"><img class="cover" src="/blog/img/cover/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-17</div><div class="title">反射机制</div></div></a></div><div><a href="/blog/2022/04/28/Java/OAuth2.0/源码分析/" title="OAuth2.0源码分析"><img class="cover" src="/blog/img/cover/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-28</div><div class="title">OAuth2.0源码分析</div></div></a></div><div><a href="/blog/2022/04/28/Java/JDK1.8 HashMap/" title="JDK1.8 HashMap"><img class="cover" src="/blog/img/cover/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-28</div><div class="title">JDK1.8 HashMap</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/blog/img/tx.jpg" onerror="this.onerror=null;this.src='/blog/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Chen</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/blog/archives/"><div class="headline">文章</div><div class="length-num">59</div></a></div><div class="card-info-data-item is-center"><a href="/blog/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div><div class="card-info-data-item is-center"><a href="/blog/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/ikychen" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:350776291@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList%E7%9A%84%E4%B8%BB%E8%A6%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">ArrayList的主要成员变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList%E7%9A%84%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">ArrayList的构造方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList%E7%9A%84add-%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">ArrayList的add()方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ensureCapacityInternal"><span class="toc-number">4.</span> <span class="toc-text">ensureCapacityInternal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#grow"><span class="toc-number">5.</span> <span class="toc-text">grow</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/blog/2022/11/03/Kong/kong%E9%85%8D%E7%BD%AE/" title="Kong配置"><img src="/blog/img/cover/kong.jpg" onerror="this.onerror=null;this.src='/blog/img/404.jpg'" alt="Kong配置"/></a><div class="content"><a class="title" href="/blog/2022/11/03/Kong/kong%E9%85%8D%E7%BD%AE/" title="Kong配置">Kong配置</a><time datetime="2022-11-03T01:11:07.331Z" title="发表于 2022-11-03 09:11:07">2022-11-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/2022/11/02/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E5%B9%B6%E5%8F%91/" title="并发编程"><img src="/blog/img/cover/concurrent.jpg" onerror="this.onerror=null;this.src='/blog/img/404.jpg'" alt="并发编程"/></a><div class="content"><a class="title" href="/blog/2022/11/02/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E5%B9%B6%E5%8F%91/" title="并发编程">并发编程</a><time datetime="2022-11-02T13:28:54.463Z" title="发表于 2022-11-02 21:28:54">2022-11-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/2022/11/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E5%85%AD%EF%BC%89%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/" title="设计模式（六）命令模式"><img src="/blog/img/cover/design.webp" onerror="this.onerror=null;this.src='/blog/img/404.jpg'" alt="设计模式（六）命令模式"/></a><div class="content"><a class="title" href="/blog/2022/11/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E5%85%AD%EF%BC%89%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/" title="设计模式（六）命令模式">设计模式（六）命令模式</a><time datetime="2022-11-02T11:58:18.842Z" title="发表于 2022-11-02 19:58:18">2022-11-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/2022/11/02/Spring/Spring%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8/" title="Spring注解使用"><img src="/blog/img/cover/spring.jpg" onerror="this.onerror=null;this.src='/blog/img/404.jpg'" alt="Spring注解使用"/></a><div class="content"><a class="title" href="/blog/2022/11/02/Spring/Spring%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8/" title="Spring注解使用">Spring注解使用</a><time datetime="2022-11-02T08:23:35.253Z" title="发表于 2022-11-02 16:23:35">2022-11-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/blog/2022/11/02/Spring/%E4%B8%89%E7%BA%A7%E7%BC%93%E5%AD%98%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" title="三级缓存解决循环依赖"><img src="/blog/img/cover/spring.jpg" onerror="this.onerror=null;this.src='/blog/img/404.jpg'" alt="三级缓存解决循环依赖"/></a><div class="content"><a class="title" href="/blog/2022/11/02/Spring/%E4%B8%89%E7%BA%A7%E7%BC%93%E5%AD%98%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" title="三级缓存解决循环依赖">三级缓存解决循环依赖</a><time datetime="2022-11-02T07:10:50.100Z" title="发表于 2022-11-02 15:10:50">2022-11-02</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/blog/img/default.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Chen</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/blog/js/utils.js"></script><script src="/blog/js/main.js"></script><script src="/blog/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/blog/js/custom.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
