@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>修改final的值</title>
+      <link href="/blog/2022/11/11/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E4%BF%AE%E6%94%B9final%E7%9A%84%E5%80%BC/"/>
+      <url>/blog/2022/11/11/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E4%BF%AE%E6%94%B9final%E7%9A%84%E5%80%BC/</url>
+      
+        <content type="html"><![CDATA[<h1 id="反射修改final修饰的变量"><a href="#反射修改final修饰的变量" class="headerlink" title="反射修改final修饰的变量"></a>反射修改final修饰的变量</h1><blockquote><p>final我们都知道，被定义后不可修改，但是利用反射能不能修改成功呢</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Work &#123;&#125;</span><br><span class="line"></span><br><span class="line">class Person &#123;</span><br><span class="line">    private final String finalName = &quot;张三&quot;;</span><br><span class="line">    private final int finalAge = 18;</span><br><span class="line">    private final Work finalWork = new Work();</span><br><span class="line">    </span><br><span class="line">    //get方法</span><br><span class="line">    ...getter</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//我们先试着修改finalName</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    Person person = new Person();</span><br><span class="line">    Class&lt;Person&gt; clazz = Person.class;</span><br><span class="line">    Field fieldName = clazz.getDeclaredField(&quot;finalName&quot;);</span><br><span class="line">    fieldName.setAccessible(true);</span><br><span class="line">    fieldName.set(person, &quot;李四&quot;);</span><br><span class="line">    System.out.println(person.getFinalName());</span><br><span class="line">&#125;</span><br><span class="line">//输出：张三</span><br></pre></td></tr></table></figure><blockquote><p>可以看到被final修饰的String没有修改成功，再试试对象</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Person person = new Person();</span><br><span class="line">//原来的work地址</span><br><span class="line">String workAddr = person.getFinalWork().toString();</span><br><span class="line">Field fieldWork = clazz.getDeclaredField(&quot;finalWork&quot;);</span><br><span class="line">fieldWork.setAccessible(true);</span><br><span class="line">fieldWork.set(person, new Work());</span><br><span class="line">System.out.println(workAddr);</span><br><span class="line">System.out.println(person.getFinalWork());</span><br><span class="line"></span><br><span class="line">//输出：</span><br><span class="line">com.cc.thread.Work@64616ca2</span><br><span class="line">com.cc.thread.Work@246ae04d</span><br></pre></td></tr></table></figure><blockquote><p>可以看到，对象即使被final修饰也可以通过反射修改，那这是为什么呢，为什么String不能被修改，普通对象却可以。<br>其实String值也被修改了，只是我们无法通过这个对象获取到修改后的值。</p></blockquote><blockquote><p>这就涉及到JVM的内联优化了：<br>内联函数，编译器将指定的函数体插入并取代每一处调用该函数的地方（上下文），从而节省了每次调用函数带来的额外时间开支。<br>简单的说，就是JVM在处理代码的时候会帮我们优化代码逻辑，比如上述的final变量，已知final修饰后不会被修改，所以获取这个变量的时候就直接帮你在编译阶段就给赋值了。</p></blockquote><blockquote><p>所以上述的getFinalName方法经过JVM编译内联优化后会变成：</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public String getFinalName() &#123;</span><br><span class="line">    return &quot;张三&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>那如果我直接获取finalName呢？</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//修改为public</span><br><span class="line">public final String finalName = &quot;张三&quot;;</span><br><span class="line"></span><br><span class="line">Field fieldName = clazz.getDeclaredField(&quot;finalName&quot;);</span><br><span class="line">fieldName.setAccessible(true);</span><br><span class="line">fieldName.set(person, &quot;李四&quot;);</span><br><span class="line">System.out.println(person.finalName);</span><br><span class="line"></span><br><span class="line">//输出：张三</span><br><span class="line"></span><br><span class="line">//因为System.out.println(person.finalName);会被编译成System.out.println(&quot;张三&quot;);</span><br></pre></td></tr></table></figure><blockquote><p>那如何获取到我们修改后的值呢</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//通过反射获取</span><br><span class="line">fieldName.set(person, &quot;李四&quot;);</span><br><span class="line">System.out.println(fieldName.get(person));</span><br><span class="line"></span><br><span class="line">//输出：李四</span><br></pre></td></tr></table></figure><h1 id="无法修改final修饰的静态变量"><a href="#无法修改final修饰的静态变量" class="headerlink" title="无法修改final修饰的静态变量"></a>无法修改final修饰的静态变量</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//final修饰的静态变量通过反射也无法修改，会报出异常</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.IllegalAccessException: Can not set static final com.cc.thread.Work field com.cc.thread.Person.finalWork to com.cc.thread.Work</span><br><span class="line">at java.base/jdk.internal.reflect.UnsafeFieldAccessorImpl.throwFinalFieldIllegalAccessException(UnsafeFieldAccessorImpl.java:76)</span><br><span class="line">at java.base/jdk.internal.reflect.UnsafeFieldAccessorImpl.throwFinalFieldIllegalAccessException(UnsafeFieldAccessorImpl.java:80)</span><br><span class="line">at java.base/jdk.internal.reflect.UnsafeQualifiedStaticObjectFieldAccessorImpl.set(UnsafeQualifiedStaticObjectFieldAccessorImpl.java:77)</span><br><span class="line">at java.base/java.lang.reflect.Field.set(Field.java:780)</span><br><span class="line">at com.cc.thread.ReflectTest.main(ReflectTest.java:56)</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+          <category> 并发编程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 并发编程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>设计模式（十三）代理模式</title>
       <link href="/blog/2022/11/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
       <url>/blog/2022/11/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</url>
@@ -273,33 +300,6 @@
         <tags>
             
             <tag> Kong </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>并发编程</title>
-      <link href="/blog/2022/11/02/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E5%B9%B6%E5%8F%91/"/>
-      <url>/blog/2022/11/02/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E5%B9%B6%E5%8F%91/</url>
-      
-        <content type="html"><![CDATA[<h1 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h1><blockquote><p>线程的优先级将该线程的重要性传递给了调度器，调度器将倾向于让优先级最高的线程先执行，<br>这并不意味着优先级较低的线程得不到执行（也就是说，优先权不会导致死锁），优先级较低的线程仅仅是执行的频率较低。</p></blockquote>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java </category>
-          
-          <category> 并发编程 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 并发编程 </tag>
             
         </tags>
       
