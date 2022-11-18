@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>文档在线预览kkFileView</title>
+      <link href="/blog/2022/11/18/%E5%B7%A5%E5%85%B7/%E6%96%87%E6%A1%A3%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88kkFileView/"/>
+      <url>/blog/2022/11/18/%E5%B7%A5%E5%85%B7/%E6%96%87%E6%A1%A3%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88kkFileView/</url>
+      
+        <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote><p>项目中需要word、excel等文件能够在线预览</p></blockquote><ul><li>支持 office, pdf, cad 等办公文档</li><li>支持 txt, xml(渲染), md(渲染), java, php, py, js, css 等所有纯文本</li><li>支持 zip, rar, jar, tar, gzip 等压缩包</li><li>支持 jpg, jpeg, png, gif, tif, tiff 等图片预览（翻转，缩放，镜像）</li><li>使用 spring-boot 开发，预览服务搭建部署非常简便</li><li>rest 接口提供服务，跨语言、跨平台特性(java,php,python,go,php，….)都支持，应用接入简单方便</li><li>抽象预览服务接口，方便二次开发，非常方便添加其他类型文件预览支持</li><li>最最重要 Apache 协议开源，代码 pull 下来想干嘛就干嘛</li></ul><h1 id="官网地址"><a href="#官网地址" class="headerlink" title="官网地址"></a>官网地址</h1><blockquote><p><a href="https://kkfileview.keking.cn/zh-cn/index.html">https://kkfileview.keking.cn/zh-cn/index.html</a></p></blockquote><h1 id="gitee源码地址"><a href="#gitee源码地址" class="headerlink" title="gitee源码地址"></a>gitee源码地址</h1><blockquote><p><a href="https://gitee.com/kekingcn/file-online-preview">https://gitee.com/kekingcn/file-online-preview</a></p></blockquote><h1 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h1><ol><li>Java: 1.8+</li><li>OpenOffice或LiberOffice(Windows下已内置，CentOS或Ubuntu下会自动下载安装，MacOS下需要自行安装)</li></ol><h1 id="部署运行"><a href="#部署运行" class="headerlink" title="部署运行"></a>部署运行</h1><h2 id="物理机或虚拟机上运行"><a href="#物理机或虚拟机上运行" class="headerlink" title="物理机或虚拟机上运行"></a>物理机或虚拟机上运行</h2><ol><li>从 码云发行版本 下载最新版发行包</li><li>解压kkFileView-x.x.x文件（Windows用.zip包，Linux/MacOS用.tar.gz包）</li><li>打开解压后文件夹的bin目录，运行startup脚本（Windows下以管理员身份运行startup.bat，Linux以root用户运行startup.sh）</li><li>浏览器访问本机8012端口 <a href="http://127.0.0.1:8012/">http://127.0.0.1:8012</a> 即可看到项目演示用首页</li></ol><h2 id="Docker容器环境环境运行"><a href="#Docker容器环境环境运行" class="headerlink" title="Docker容器环境环境运行"></a>Docker容器环境环境运行</h2><ol><li><p>拉取镜像</p><blockquote><p>docker pull keking/kkfileview</p></blockquote></li><li><p>运行</p><blockquote><p>docker run -it -p 8012:8012 keking/kkfileview</p></blockquote></li><li><p>浏览器访问容器8012端口 <a href="http://xxx.xxx.xxx.xxx:8012/">http://xxx.xxx.xxx.xxx:8012</a> 即可看到项目演示用首页</p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ArrayList和LinkedList的区别</title>
+      <link href="/blog/2022/11/11/Java/ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+      <url>/blog/2022/11/11/Java/ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      
+        <content type="html"><![CDATA[<h1 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h1><ol><li>基于数组</li><li>可以按下标查询</li><li>可以插入到指定下标位置，但是会触发扩容操作，增加了额外的扩容成本</li></ol><h1 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h1><ol><li>基于链表</li><li>需要对链表进行遍历，才能找到指定下表（但是如果获取的是头结点或尾结点，并不需要遍历）</li><li>如果插在头结点或尾结点是很快的，但是如果是插在指定下标位置，就需要遍历链表找到指定位置，从而降低了效率，但是链表不需要扩容</li></ol><blockquote><p>默认情况下，如果添加操作过多，而且都是插入在最后，就用LinkedList，因为不需要扩容<br>查询的话，如果是直接遍历，两种区别并不大。但是如果需要按指定下标获取List的元素，那么就用ArrayList</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>修改final的值</title>
       <link href="/blog/2022/11/11/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E4%BF%AE%E6%94%B9final%E7%9A%84%E5%80%BC/"/>
       <url>/blog/2022/11/11/Java/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E4%BF%AE%E6%94%B9final%E7%9A%84%E5%80%BC/</url>
