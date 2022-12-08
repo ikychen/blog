@@ -4,11 +4,86 @@
   
     
     <entry>
+      <title>ThreadLocal内存泄漏</title>
+      <link href="/blog/2022/12/08/Java/ThreadLocal%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
+      <url>/blog/2022/12/08/Java/ThreadLocal%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/</url>
+      
+        <content type="html"><![CDATA[<h1 id="ThreadLocal原理"><a href="#ThreadLocal原理" class="headerlink" title="ThreadLocal原理"></a>ThreadLocal原理</h1><blockquote><p>ThreadLocal的实现是这样的：每个Thread 维护一个 ThreadLocalMap 映射表，这个映射表的 key 是 ThreadLocal实例本身，value 是真正需要存储的 Object<br>也就是说 ThreadLocal 本身并不存储值，它只是作为一个 key 来让线程从 ThreadLocalMap 获取 value。值得注意的是图中的虚线，表示 ThreadLocalMap 是使用 ThreadLocal 的弱引用作为 Key 的，弱引用的对象在 GC 时会被回收</p></blockquote><h1 id="ThreadLocal为什么会内存泄漏"><a href="#ThreadLocal为什么会内存泄漏" class="headerlink" title="ThreadLocal为什么会内存泄漏"></a>ThreadLocal为什么会内存泄漏</h1><blockquote><p>ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal没有外部强引用来引用它，那么系统 GC 的时候，这个ThreadLocal势必会被回收，这样一来，ThreadLocalMap中就会出现key为null的Entry，就没有办法访问这些key为null的Entry的value，如果当前线程再迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链：Thread Ref -&gt; Thread -&gt; ThreaLocalMap -&gt; Entry -&gt; value永远无法回收，造成内存泄漏。</p></blockquote><blockquote><p>其实，ThreadLocalMap的设计中已经考虑到这种情况，也加上了一些防护措施：在ThreadLocal的get(),set(),remove()的时候都会清除线程ThreadLocalMap里所有key为null的value。</p></blockquote><blockquote><p>但是这些被动的预防措施并不能保证不会内存泄漏：</p></blockquote><ol><li>使用static的ThreadLocal，延长了ThreadLocal的生命周期，可能导致的内存泄漏。</li><li>分配使用了ThreadLocal又不再调用get(),set(),remove()方法，那么就会导致内存泄漏。</li></ol><h1 id="为什么使用弱引用"><a href="#为什么使用弱引用" class="headerlink" title="为什么使用弱引用"></a>为什么使用弱引用</h1><blockquote><p>我们先来看看官方文档的说法：</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">To help deal with very large and long-lived usages, the hash table entries use WeakReferences for keys.</span><br><span class="line">为了应对非常大和长时间的用途，哈希表使用弱引用的 key。</span><br></pre></td></tr></table></figure><blockquote><p>下面我们分两种情况讨论：</p></blockquote><ol><li>key 使用强引用：引用的ThreadLocal的对象被回收了，但是ThreadLocalMap还持有ThreadLocal的强引用，如果没有手动删除，ThreadLocal不会被回收，导致Entry内存泄漏。</li><li>key 使用弱引用：引用的ThreadLocal的对象被回收了，由于ThreadLocalMap持有ThreadLocal的弱引用，即使没有手动删除，ThreadLocal也会被回收。value在下一次ThreadLocalMap调用set,get，remove的时候会被清除。</li></ol><blockquote><p>比较两种情况，我们可以发现：由于ThreadLocalMap的生命周期跟Thread一样长，如果都没有手动删除对应key，都会导致内存泄漏，但是使用弱引用可以多一层保障：弱引用ThreadLocal不会内存泄漏，对应的value在下一次ThreadLocalMap调用set,get,remove的时候会被清除。<br>因此，ThreadLocal内存泄漏的根源是：由于ThreadLocalMap的生命周期跟Thread一样长，如果没有手动删除对应key就会导致内存泄漏，而不是因为弱引用。</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>强引用，软引用，弱引用和虚引用</title>
+      <link href="/blog/2022/12/08/Java/%E5%BC%95%E7%94%A8/"/>
+      <url>/blog/2022/12/08/Java/%E5%BC%95%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote><p>在JDK1.2以前的版本中，当一个对象不被任何变量引用，那么程序就无法再使用这个对象。也就是说，只有对象处于可触及状态，程序才能使用它。这就像在商店购买了某样物品后，如果有用就一直保留它，否则就把它扔到垃圾箱，由清洁工人收走。一般说来，如果物品已经被扔到垃圾箱，想再把它捡回来使用就不可能了。<br>但有时候情况并不这么简单，可能会遇到可有可无的”鸡肋”物品。这种物品现在已经无用了，保留它会占空间，但是立刻扔掉它也不划算，因为也许将来还会派用场。对于这样的可有可无的物品：如果家里空间足够，就先把它保留在家里，如果家里空间不够，即使把家里所有的垃圾清除，还是无法容纳那些必不可少的生活用品，那么再扔掉这些可有可无的物品。</p></blockquote><blockquote><p>在Java中，虽然不需要程序员手动去管理对象的生命周期，但是如果希望某些对象具备一定的生命周期的话（比如内存不足时JVM就会自动回收某些对象从而避免OutOfMemory的错误）就需要用到软引用和弱引用了。</p></blockquote><blockquote><p>从Java SE2开始，就提供了四种类型的引用：强引用、软引用、弱引用和虚引用。Java中提供这四种引用类型主要有两个目的：第一是可以让程序员通过代码的方式决定某些对象的生命周期；第二是有利于JVM进行垃圾回收。</p></blockquote><h1 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h1><blockquote><p>之前我们使用的大部分引用实际上都是强引用，这是使用最普遍的引用。比如下面这段代码中的object和str都是强引用：</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Object object = new Object();</span><br><span class="line">String str = &quot;StrongReference&quot;;</span><br></pre></td></tr></table></figure><blockquote><p>如果一个对象具有强引用，那就类似于必不可少的物品，不会被垃圾回收器回收。当内存空间不足，Java虚拟机宁愿抛出OutOfMemoryError错误，使程序异常终止，也不回收这种对象。</p></blockquote><h1 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h1><blockquote><p>软引用是用来描述一些有用但并不是必需的对象，在Java中用java.lang.ref.SoftReference类来表示。对于软引用关联着的对象，只有在内存不足的时候JVM才会回收该对象。因此，这一点可以很好地用来解决OOM的问题，并且这个特性很适合用来实现缓存：比如网页缓存、图片缓存等。</p></blockquote><blockquote><p>软引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被JVM回收，这个软引用就会被加入到与之关联的引用队列中。</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import java.lang.ref.SoftReference;</span><br><span class="line"> </span><br><span class="line">public class SoftRef &#123;  </span><br><span class="line"> </span><br><span class="line">    public static void main(String[] args)&#123;  </span><br><span class="line">        System.out.println(&quot;start&quot;);</span><br><span class="line">        Obj obj = new Obj();</span><br><span class="line">        SoftReference&lt;Obj&gt; sr = new SoftReference&lt;Obj&gt;(obj);</span><br><span class="line">        obj = null;</span><br><span class="line">        System.gc(); //执行了gc只有在内存不足时才会被回收</span><br><span class="line">        System.out.println(sr.get());</span><br><span class="line">        System.out.println(&quot;end&quot;);   </span><br><span class="line">    &#125;       </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line">class Obj&#123;  </span><br><span class="line">    int[] obj ;  </span><br><span class="line">    public Obj()&#123;  </span><br><span class="line">        obj = new int[1000];  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//执行结果</span><br><span class="line">start</span><br><span class="line">com.cc.reference.Obj@3b81a1bc</span><br><span class="line">end</span><br></pre></td></tr></table></figure><blockquote><p>当内存足够大时可以把数组存入软引用，取数据时就可从内存里取数据，提高运行效率<br>软引用在作为缓存非常合适，例如将一些特别的图片存在缓存里，下次需要时就直接从缓存中那，内存不够时就将它干掉</p></blockquote><h1 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h1><blockquote><p>弱引用也是用来描述非必需对象的，当JVM进行垃圾回收时，无论内存是否充足，都会回收被弱引用关联的对象。在java中，用java.lang.ref.WeakReference类来表示。</p></blockquote><blockquote><p>弱引用与软引用的区别在于：只具有弱引用的对象拥有更短暂的生命周期。在垃圾回收器线程扫描它所管辖的内存区域的过程中，一旦发现了只具有弱引用的对象，不管当前内存空间足够与否，都会回收它的内存。不过，由于垃圾回收器是一个优先级很低的线程， 因此不一定会很快发现那些只具有弱引用的对象。所以被软引用关联的对象只有在内存不足时才会被回收，而被弱引用关联的对象在JVM进行垃圾回收时总会被回收。</p></blockquote><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import java.lang.ref.WeakReference;</span><br><span class="line"> </span><br><span class="line">public class WeakRef &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        WeakReference&lt;String&gt; sr = new WeakReference&lt;String&gt;(new String(&quot;hello&quot;));</span><br><span class="line">        System.out.println(sr.get());</span><br><span class="line">        System.gc();                //通知JVM的gc进行垃圾回收</span><br><span class="line">        System.out.println(sr.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//执行结果</span><br><span class="line">hello</span><br><span class="line">null</span><br></pre></td></tr></table></figure><blockquote><p>在使用软引用和弱引用的时候，我们可以显示地通过System.gc()来通知JVM进行垃圾回收，但是要注意的是，虽然发出了通知，JVM不一定会立刻执行，也就是说这句是无法确保此时JVM一定会进行垃圾回收的。</p></blockquote><blockquote><p>应用场景：如果一个对象是偶尔的使用，并且希望在使用时随时就能获取到，但又不想影响此对象的垃圾收集，那么应该用 Weak Reference 来记住此对象。或者想引用一个对象，但是这个对象有自己的生命周期，你不想介入这个对象的生命周期，这时候就应该用弱引用，这个引用不会在对象的垃圾回收判断中产生任何附加的影响。</p></blockquote><h1 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h1><blockquote><p>虚引用和前面的软引用、弱引用不同，它并不影响对象的生命周期。在java中用java.lang.ref.PhantomReference类表示。如果一个对象与虚引用关联，则跟没有引用与之关联一样，在任何时候都可能被垃圾回收器回收。虚引用主要用来跟踪对象被垃圾回收的活动。</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>手写模拟Spring</title>
+      <link href="/blog/2022/11/23/Spring/%E6%89%8B%E5%86%99%E6%A8%A1%E6%8B%9FSpring/"/>
+      <url>/blog/2022/11/23/Spring/%E6%89%8B%E5%86%99%E6%A8%A1%E6%8B%9FSpring/</url>
+      
+        <content type="html"><![CDATA[<ol><li>容器启动</li><li>BeanDefinition扫描</li><li>Bean生命周期</li><li>单例与多例bean</li><li>依赖注入</li><li>AOP</li><li>Aware回调</li><li>初始化</li><li>BeanPostProcessor</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> Spring </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Spring </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文档在线预览kkFileView</title>
       <link href="/blog/2022/11/18/%E5%B7%A5%E5%85%B7/%E6%96%87%E6%A1%A3%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88kkFileView/"/>
       <url>/blog/2022/11/18/%E5%B7%A5%E5%85%B7/%E6%96%87%E6%A1%A3%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88kkFileView/</url>
       
-        <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote><p>项目中需要word、excel等文件能够在线预览</p></blockquote><ul><li>支持 office, pdf, cad 等办公文档</li><li>支持 txt, xml(渲染), md(渲染), java, php, py, js, css 等所有纯文本</li><li>支持 zip, rar, jar, tar, gzip 等压缩包</li><li>支持 jpg, jpeg, png, gif, tif, tiff 等图片预览（翻转，缩放，镜像）</li><li>使用 spring-boot 开发，预览服务搭建部署非常简便</li><li>rest 接口提供服务，跨语言、跨平台特性(java,php,python,go,php，….)都支持，应用接入简单方便</li><li>抽象预览服务接口，方便二次开发，非常方便添加其他类型文件预览支持</li><li>最最重要 Apache 协议开源，代码 pull 下来想干嘛就干嘛</li></ul><h1 id="官网地址"><a href="#官网地址" class="headerlink" title="官网地址"></a>官网地址</h1><blockquote><p><a href="https://kkfileview.keking.cn/zh-cn/index.html">https://kkfileview.keking.cn/zh-cn/index.html</a></p></blockquote><h1 id="gitee源码地址"><a href="#gitee源码地址" class="headerlink" title="gitee源码地址"></a>gitee源码地址</h1><blockquote><p><a href="https://gitee.com/kekingcn/file-online-preview">https://gitee.com/kekingcn/file-online-preview</a></p></blockquote><h1 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h1><ol><li>Java: 1.8+</li><li>OpenOffice或LiberOffice(Windows下已内置，CentOS或Ubuntu下会自动下载安装，MacOS下需要自行安装)</li></ol><h1 id="部署运行"><a href="#部署运行" class="headerlink" title="部署运行"></a>部署运行</h1><h2 id="物理机或虚拟机上运行"><a href="#物理机或虚拟机上运行" class="headerlink" title="物理机或虚拟机上运行"></a>物理机或虚拟机上运行</h2><ol><li>从 码云发行版本 下载最新版发行包</li><li>解压kkFileView-x.x.x文件（Windows用.zip包，Linux/MacOS用.tar.gz包）</li><li>打开解压后文件夹的bin目录，运行startup脚本（Windows下以管理员身份运行startup.bat，Linux以root用户运行startup.sh）</li><li>浏览器访问本机8012端口 <a href="http://127.0.0.1:8012/">http://127.0.0.1:8012</a> 即可看到项目演示用首页</li></ol><h2 id="Docker容器环境环境运行"><a href="#Docker容器环境环境运行" class="headerlink" title="Docker容器环境环境运行"></a>Docker容器环境环境运行</h2><ol><li><p>拉取镜像</p><blockquote><p>docker pull keking/kkfileview</p></blockquote></li><li><p>运行</p><blockquote><p>docker run -it -p 8012:8012 keking/kkfileview</p></blockquote></li><li><p>浏览器访问容器8012端口 <a href="http://xxx.xxx.xxx.xxx:8012/">http://xxx.xxx.xxx.xxx:8012</a> 即可看到项目演示用首页</p></li></ol>]]></content>
+        <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote><p>项目中需要word、excel等文件能够在线预览</p></blockquote><ul><li>支持 office, pdf, cad 等办公文档</li><li>支持 txt, xml(渲染), md(渲染), java, php, py, js, css 等所有纯文本</li><li>支持 zip, rar, jar, tar, gzip 等压缩包</li><li>支持 jpg, jpeg, png, gif, tif, tiff 等图片预览（翻转，缩放，镜像）</li><li>使用 spring-boot 开发，预览服务搭建部署非常简便</li><li>rest 接口提供服务，跨语言、跨平台特性(java,php,python,go,php，….)都支持，应用接入简单方便</li><li>抽象预览服务接口，方便二次开发，非常方便添加其他类型文件预览支持</li><li>最最重要 Apache 协议开源，代码 pull 下来想干嘛就干嘛</li></ul><h1 id="官网地址"><a href="#官网地址" class="headerlink" title="官网地址"></a>官网地址</h1><blockquote><p><a href="https://kkfileview.keking.cn/zh-cn/index.html">https://kkfileview.keking.cn/zh-cn/index.html</a></p></blockquote><h1 id="gitee源码地址"><a href="#gitee源码地址" class="headerlink" title="gitee源码地址"></a>gitee源码地址</h1><blockquote><p><a href="https://gitee.com/kekingcn/file-online-preview">https://gitee.com/kekingcn/file-online-preview</a></p></blockquote><h1 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h1><ol><li>Java: 1.8+</li><li>OpenOffice或LiberOffice(Windows下已内置，CentOS或Ubuntu下会自动下载安装，MacOS下需要自行安装)</li></ol><h1 id="部署运行"><a href="#部署运行" class="headerlink" title="部署运行"></a>部署运行</h1><h2 id="物理机或虚拟机上运行"><a href="#物理机或虚拟机上运行" class="headerlink" title="物理机或虚拟机上运行"></a>物理机或虚拟机上运行</h2><ol><li>从 码云发行版本 下载最新版发行包</li><li>解压kkFileView-x.x.x文件（Windows用.zip包，Linux/MacOS用.tar.gz包）</li><li>打开解压后文件夹的bin目录，运行startup脚本（Windows下以管理员身份运行startup.bat，Linux以root用户运行startup.sh）</li><li>浏览器访问本机8012端口 <a href="http://127.0.0.1:8012/">http://127.0.0.1:8012</a> 即可看到项目演示用首页</li></ol><h2 id="Docker容器环境环境运行"><a href="#Docker容器环境环境运行" class="headerlink" title="Docker容器环境环境运行"></a>Docker容器环境环境运行</h2><ol><li><p>拉取镜像</p><blockquote><p>docker pull keking/kkfileview</p></blockquote></li><li><p>运行</p><blockquote><p>docker run -it -p 8012:8012 keking/kkfileview</p></blockquote></li><li><p>浏览器访问容器8012端口 <a href="http://xxx.xxx.xxx.xxx:8012/">http://xxx.xxx.xxx.xxx:8012</a> 即可看到项目演示用首页</p></li></ol><h2 id="中文字体乱码"><a href="#中文字体乱码" class="headerlink" title="中文字体乱码"></a>中文字体乱码</h2><blockquote><p>大部分Linux系统上并没有预装中文字体或字体不全，需要把常用字体拷贝到Linux服务器上，具体操作如下：<br>下载如下字体包 <a href="http://kkfileview.keking.cn/fonts.zip">http://kkfileview.keking.cn/fonts.zip</a> 文件解压完整拷贝到Linux下的 /usr/share/fonts目录。<br>然后依次执行mkfontscale 、mkfontdir 、fc-cache使字体生效</p></blockquote>]]></content>
       
       
       <categories>
